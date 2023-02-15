@@ -22,10 +22,10 @@ function Sidebar() {
       <div
         className="flex items-center 
       justify-center w-14 h-14 hoverAnimation 
-      p-0">
+      p-0 xl:ml-24">
         <Image src="https://rb.gy/ogau5a" width={30} height={30}  />
       </div>
-      <div className="space-y-2.5 mt-4 mb-2.5">
+      <div className="space-y-2.5 mt-4 mb-2.5 xl:ml-24">
         <SidebarLink text="Home" Icon={HomeIcon} active />
         <SidebarLink text="Explore" Icon={HashtagIcon} />
         <SidebarLink text="Notifications" Icon={BellIcon} />
