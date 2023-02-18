@@ -15,12 +15,14 @@ import {
 } from "@firebase/firestore";
 import { getDownloadURL, ref, uploadString } from "@firebase/storage";
 import React, { useRef, useState } from "react";
-import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
-import { async } from "@firebase/util";
+import { useSession } from "next-auth/react";
 // import "emoji-mart/css/emoji-mart.css"; <--- not working!!!
 
 function Input() {
+  
+  const { data: session } = useSession()
+
   const [input, setInput] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
   const [showEmojis, setShowEmojis] = useState(false);
@@ -42,10 +44,10 @@ function Input() {
     setLoading(true);
 
     const docRef = await addDoc(collection(db, "posts"), {
-      // id: session.user.uid,
-      // username: session.user.name,
-      // userImg: session.user.image,
-      // tag: session.user.tag,
+      id: session.user.uid,
+      username: session.user.name,
+      userImg: session.user.image,
+      tag: session.user.tag,
       text: input,
       timestamp: serverTimestamp(),
     });
@@ -83,7 +85,7 @@ function Input() {
       className={`border-b border-gray-700 p-3 flex space-x-3 overflow-y-scroll ${loading && "opacity-60"}`}>
       <img
         className="w-11 h-11 rounded-full cursor-pointer"
-        src="https://lh3.googleusercontent.com/a/AEdFTp5DA3EGBny7n2dibhRJJo_opsiko9dFzOrILKXM=s576-p-rw-no"
+        src={session.user.image}
         alt=""
       />
       <div className="w-full divide-y divide-gray-700">

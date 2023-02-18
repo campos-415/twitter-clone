@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+*{
+  
+}
+
 @layer base {
   body {
     @apply bg-black
@@ -9,6 +13,7 @@
 }
 
 @layer components {
+
   .hoverAnimation {
     @apply hover:bg-[#ffffff] hover:bg-opacity-20 cursor-pointer rounded-full
     w-[52px] h-[52px] xl:w-auto xl:h-auto xl:py-3 xl:px-4 
@@ -17,6 +22,27 @@
   .icon {
     @apply cursor-pointer w-9 h-9 hover:bg-[#1d9bf0] hover:bg-opacity-10 
     flex items-center justify-center rounded-full transition ease-out
+  }
+
+  .span1 {
+    @apply relative z-10 block px-5 py-3 overflow-hidden font-medium leading-tight 
+    text-gray-800 transition-colors duration-300 ease-out border-2 border-gray-900 
+    rounded-lg group-hover:text-white
+  }
+
+  .span2 {
+    @apply absolute inset-0 w-full h-full px-5 py-3 rounded-lg bg-gray-50
+  }
+
+  .span3 {
+    @apply absolute left-0 w-52 h-52 -ml-2 transition-all duration-300 
+    origin-top-right -rotate-90 -translate-x-full translate-y-12 bg-[#1d9bf0] 
+    group-hover:-rotate-180 ease-in-out
+  }
+
+  .span4 {
+    @apply absolute bottom-0 right-0 w-full h-12 -mb-1 -mr-1 transition-all duration-200
+     ease-linear bg-gray-900 rounded-lg group-hover:mb-0 group-hover:mr-0
   }
 }
 

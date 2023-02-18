@@ -15,7 +15,7 @@ export const authOptions = {
       session.user.tag = session.user.name
       .split(" ")
       .join("")
-      .toLocaleLowerase()
+      .toLocaleLowerCase()
 
       session.user.uid = token.sub
 
