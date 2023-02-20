@@ -12,7 +12,6 @@ function Login({ providers }) {
         height={150}
         priority="yes"
       />
-
       <div>
         {Object.values(providers).map((provider) => (
           <div key={provider.name}>
