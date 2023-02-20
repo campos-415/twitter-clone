@@ -49,10 +49,11 @@ function Post({ id, post, postPage }) {
       [db, id]
   )
 
-  useEffect(() =>
-    onSnapshot(collection(db, "posts", id, "likes"), (snapshot) =>
-      setLikes(snapshot.docs)
-    ),
+  useEffect(
+    () =>
+      onSnapshot(collection(db, "posts", id, "likes"), (snapshot) =>
+        setLikes(snapshot.docs)
+      ),
     [db, id]
   );
 
