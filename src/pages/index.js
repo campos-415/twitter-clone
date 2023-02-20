@@ -26,7 +26,7 @@ export default function Home({trendingResults, followResults, providers}) {
         <Feed /> 
         {/* Widgets */}
 
-        {/* <Modal /> */}
+        <Modal />
       </main>
     </>
   );
