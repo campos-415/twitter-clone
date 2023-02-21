@@ -33,21 +33,21 @@ function Post({ id, post, postPage }) {
   const [isOpen, setIsOpen] = useRecoilState(modalState);
   const [postId, setPostId] = useRecoilState(postIdState);
   const [comments, setComments] = useState([]);
-  const [liked, setLiked] = useState(false);
   const [likes, setLikes] = useState([]);
+  const [liked, setLiked] = useState(false);
   const router = useRouter();
 
   useEffect(
-    () => 
+    () =>
       onSnapshot(
         query(
-          collection(db, "posts" , id, "comments"),
+          collection(db, "posts", id, "comments"),
           orderBy("timestamp", "desc")
         ),
         (snapshot) => setComments(snapshot.docs)
       ),
-      [db, id]
-  )
+    [db, id]
+  );
 
   useEffect(
     () =>
@@ -78,39 +78,41 @@ function Post({ id, post, postPage }) {
   return (
     <div
       className="p-3 flex cursor-pointer border-b border-gray-700"
-      onClick={() => router.push(`/${id}`)}>
+      onClick={() => router.push(`/${id}`)}
+    >
       {!postPage && (
         <img
           src={post?.userImg}
-          alt="profile-pic"
+          alt=""
           className="h-11 w-11 rounded-full mr-4"
         />
       )}
       <div className="flex flex-col space-y-2 w-full">
         <div className={`flex ${!postPage && "justify-between"}`}>
-          {postPage &&
-            Post(
-              <img
-                src={post?.userImg}
-                alt="profile-pic"
-                className="h-11 w-11 rounded-full mr-4"
-              />
-            )}
+          {postPage && (
+            <img
+              src={post?.userImg}
+              alt="Profile Pic"
+              className="h-11 w-11 rounded-full mr-4"
+            />
+          )}
           <div className="text-[#6e767d]">
             <div className="inline-block group">
               <h4
-                className={`font-bold text-[15px] sm:text-base text-[#9d9d9d] group-hover:underline ${
+                className={`font-bold text-[15px] sm:text-base text-[#d9d9d9] group-hover:underline ${
                   !postPage && "inline-block"
-                }`}>
-                {post.username}
+                }`}
+              >
+                {post?.username}
               </h4>
               <span
-                className={`text-sm sm:text-[15px] ${!postPage && "ml-1.5"}`}>
-                @{post.tag}
+                className={`text-sm sm:text-[15px] ${!postPage && "ml-1.5"}`}
+              >
+                @{post?.tag}
               </span>
-            </div>{" "}
-            .{" "}
-            <span className="hover:underline text-sm sm:tex-[15px]">
+            </div>
+            ·{" "}
+            <span className="hover:underline text-sm sm:text-[15px]">
               <Moment fromNow>{post?.timestamp?.toDate()}</Moment>
             </span>
             {!postPage && (
@@ -132,18 +134,20 @@ function Post({ id, post, postPage }) {
           className="rounded-2xl max-h-[700px] object-cover mr-2"
         />
         <div
-          className={`text-[#63767d] flex justify-between w-10/12 ${
+          className={`text-[#6e767d] flex justify-between w-10/12 ${
             postPage && "mx-auto"
-          }`}>
+          }`}
+        >
           <div
             className="flex items-center space-x-1 group"
             onClick={(e) => {
               e.stopPropagation();
               setPostId(id);
               setIsOpen(true);
-            }}>
+            }}
+          >
             <div className="icon group-hover:bg-[#1d9bf0] group-hover:bg-opacity-10">
-              <ChatIcon className="h-5  group-hover:text-[#1d9bf0]" />
+              <ChatIcon className="h-5 group-hover:text-[#1d9bf0]" />
             </div>
             {comments.length > 0 && (
               <span className="group-hover:text-[#1d9bf0] text-sm">
@@ -159,7 +163,8 @@ function Post({ id, post, postPage }) {
                 e.stopPropagation();
                 deleteDoc(doc(db, "posts", id));
                 router.push("/");
-              }}>
+              }}
+            >
               <div className="icon group-hover:bg-red-600/10">
                 <TrashIcon className="h-5 group-hover:text-red-600" />
               </div>
@@ -177,7 +182,8 @@ function Post({ id, post, postPage }) {
             onClick={(e) => {
               e.stopPropagation();
               likePost();
-            }}>
+            }}
+          >
             <div className="icon group-hover:bg-pink-600/10">
               {liked ? (
                 <HeartIconFilled className="h-5 text-pink-600" />
@@ -189,7 +195,8 @@ function Post({ id, post, postPage }) {
               <span
                 className={`group-hover:text-pink-600 text-sm ${
                   liked && "text-pink-600"
-                }`}>
+                }`}
+              >
                 {likes.length}
               </span>
             )}

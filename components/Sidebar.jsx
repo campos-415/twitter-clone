@@ -27,7 +27,7 @@ function Sidebar() {
         className="flex items-center 
       justify-center w-14 h-14 hoverAnimation 
       p-0 xl:ml-24">
-        <Image src="https://rb.gy/ogau5a" width={30} height={30}  />
+        <Image src="https://rb.gy/ogau5a" width={30} height={30} alt="LogoImg" />
       </div>
       <div className="space-y-2.5 mt-4 mb-2.5 xl:ml-24" >
         <SidebarLink text="Home" Icon={HomeIcon} active />
@@ -46,13 +46,13 @@ function Sidebar() {
       </button>
       <div className="text-[#d9d9d9] flex items-center justify-center mt-auto hoverAnimation ml-auto xl:-mr-5" onClick={signOut}>
         <img
-          src={session.user.image}
+          src={session?.user?.image}
           className="h-10 w-10 rounded-full xl:mr-2.5"
-          alt=""
+          alt="userImg"
         />
         <div className="hidden xl:inline leading-5 ">
-          <h4 className="font-bold text-sm">{session.user.name}</h4>
-          <p className="text-[#6e767d] ">@{session.user.tag}</p>
+          <h4 className="font-bold text-sm">{session?.user?.name}</h4>
+          <p className="text-[#6e767d] ">@{session?.user?.tag}</p>
         </div>
         <DotsHorizontalIcon className="h-5 hidden xl:inline ml-10" />
       </div>

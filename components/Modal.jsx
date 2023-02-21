@@ -33,9 +33,13 @@ function Modal() {
     () =>
       onSnapshot(doc(db, "posts", postId), (snapshot) => {
         setPost(snapshot.data());
+        console.log(postId)
+        console.log(snapshot.data())
       }),
-    [db]
+    [postId]
   );
+
+
 
   const sendComment = async (e) => {
     e.preventDefault();
@@ -91,7 +95,7 @@ function Modal() {
                     <span className="w-0.5 h-full z-[-1] absolute left-5 top-11 bg-gray-600" />
                     <img
                       src={post?.userImg}
-                      alt=""
+                      alt="userImg"
                       className="h-11 w-11 rounded-full"
                     />
                     <div>
@@ -116,7 +120,7 @@ function Modal() {
                   <div className="mt-7 flex space-x-3 w-full">
                     <img
                       src={session.user.image}
-                      alt=""
+                      alt="userImg"
                       className="h-11 w-11 rounded-full"
                     />
                     <div className="flex-grow mt-2">
