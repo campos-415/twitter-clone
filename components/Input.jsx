@@ -17,7 +17,6 @@ import { getDownloadURL, ref, uploadString } from "@firebase/storage";
 import React, { useRef, useState } from "react";
 import Picker from "@emoji-mart/react";
 import { useSession } from "next-auth/react";
-// import "emoji-mart/css/emoji-mart.css"; <--- not working!!!
 
 function Input() {
   
@@ -147,7 +146,9 @@ function Input() {
             )}
           </div>
           <button
-            className="bg-[#1d9bf0] text-white rounded-full px-4 py-1.5 font-bold shadow-md hover:bg-[#1a8cd8] disabled:hover:bg-[#1d9bf0] disabled:opacity-50 disabled:cursor-default"
+            className="bg-[#1d9bf0] text-white rounded-full px-4 py-1.5 
+            font-bold shadow-md hover:bg-[#1a8cd8] disabled:hover:bg-[#1d9bf0] 
+            disabled:opacity-50 disabled:cursor-default"
             disabled={!input.trim() && !selectedFile}
             onClick={sendPost}>
             Tweet

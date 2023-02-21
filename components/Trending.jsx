@@ -1,6 +1,6 @@
 import { DotsHorizontalIcon } from "@heroicons/react/outline";
 import Image from "next/image";
-import { useEffect } from "react";
+
 
 function Trending({ result }) {
 
