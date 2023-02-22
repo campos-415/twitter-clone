@@ -4,17 +4,33 @@ import { getProviders, getSession, useSession } from "next-auth/react";
 import Login from "components/Login";
 import Modal from "components/Modal";
 import { useRecoilState } from "recoil";
-import { modalState } from "/atoms/modalAtom";
+import { modalState, userPosts } from "/atoms/modalAtom";
 import Widgets from "components/Widgets";
-import { useState } from "react";
+import { use, useEffect, useState } from "react";
 import Profile from "components/Profile";
+import { db } from "/firebase";
+import {
+  collection,
+  getDocs,
+  onSnapshot,
+  orderBy,
+  query,
+  where,
+} from "firebase/firestore";
+import { useRouter } from "next/router";
+import { async } from "@firebase/util";
 
-function User({trendingResults, followResults, providers}) {
-
-  const { data: session } = useSession()
+function User({ trendingResults, followResults, providers }) {
+  const { data: session } = useSession();
   const [isOpen, setIsOpen] = useRecoilState(modalState);
+  const router = useRouter();
+  const { id } = router.query;
+  const [userPost, setUserPost] = useState();
+  const [posts, setPosts] = useState();
 
-  if (!session) return <Login providers={providers} />
+  
+
+  if (!session) return <Login providers={providers} />;
 
   return (
     <>
@@ -27,15 +43,18 @@ function User({trendingResults, followResults, providers}) {
 
       <main className="bg-black min-h-screen flex max-w-[1500px] mx-auto">
         <Sidebar />
-        <Profile user={session?.user} />
+        <Profile user={session?.user} post={posts} />
+        <div className="text-white">
+          {/* <button className="bg-white text-black" onClick={getPosts}>click me</button> */}
+        </div>
 
         {isOpen && <Modal />}
       </main>
     </>
-  )
+  );
 }
 
-export default User
+export default User;
 
 export async function getServerSideProps(context) {
   const trendingResults = await fetch("https://www.jsonkeeper.com/b/NKEV").then(
