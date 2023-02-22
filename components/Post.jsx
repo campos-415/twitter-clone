@@ -83,7 +83,7 @@ function Post({ id, post, postPage }) {
       {!postPage && (
         <img
           src={post?.userImg}
-          alt=""
+          alt="post-img"
           className="h-11 w-11 rounded-full mr-4"
         />
       )}

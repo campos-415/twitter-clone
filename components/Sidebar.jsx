@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import SidebarLink from "./SidebarLink";
 import {
@@ -13,11 +13,25 @@ import {
 } from "@heroicons/react/outline";
 import { HomeIcon } from "@heroicons/react/solid";
 import { signOut, useSession } from "next-auth/react";
+import { useRouter } from "next/router";
+import { doc, onSnapshot } from "firebase/firestore";
+import { Snapshot } from "recoil";
+import { db } from "../firebase";
+import Link from "next/link";
 
 function Sidebar() {
   
   const { data: session} = useSession()
+  const [userId, setUserId] = useState()
+  const router = useRouter()
 
+  useEffect(() => {
+    setUserId(session?.user?.uid)
+    // console.log(userId)
+  },
+  [db]
+  )
+  
   return (
     <div
       className="hidden sm:flex flex-col 
@@ -30,13 +44,19 @@ function Sidebar() {
         <Image src="https://rb.gy/ogau5a" width={30} height={30} alt="LogoImg" />
       </div>
       <div className="space-y-2.5 mt-4 mb-2.5 xl:ml-24" >
-        <SidebarLink text="Home" Icon={HomeIcon} active />
+        <Link href="/">
+          <SidebarLink text="Home" Icon={HomeIcon} active  />
+        </Link>
         <SidebarLink text="Explore" Icon={HashtagIcon} />
         <SidebarLink text="Notifications" Icon={BellIcon} />
         <SidebarLink text="Messages" Icon={InboxIcon} />
         <SidebarLink text="Bookmarks" Icon={BookmarkIcon} />
         <SidebarLink text="Lists" Icon={ClipboardListIcon} />
-        <SidebarLink text="Profile" Icon={UserIcon} />
+        {/* <Link href="/user/[id]" as={`/user/${session?.user?.name}`}> */}
+        <div onClick={() => router.push(`/user/${userId}`)}>
+          <SidebarLink text="Profile" Icon={UserIcon} />
+        </div>
+        {/* </Link> */}
         <SidebarLink text="More" Icon={DotsCircleHorizontalIcon} />
       </div>
       <button

@@ -4,7 +4,6 @@ import React from "react";
 import Trending from "./Trending";
 
 function Widgets({ followResults, trendingResults }) {
-  console.log(trendingResults);
   return (
     <div className="hidden lg:inline ml-8 xl:w-[450px] py-1 space-y-5">
       <div className="sticky top-0 py-1.5 bg-black z-50 w-11/12 xl:w-9/12">
@@ -38,8 +37,8 @@ function Widgets({ followResults, trendingResults }) {
               src={result.userImg}
               width={50}
               height={50}
-              objectFit="cover"
-              className="rounded-full"
+              className="rounded-full object-cover"
+              alt="userImg"
             />
             <div className="ml-4 leading-5 group">
               <h4 className="font-bold group-hover:underline">
