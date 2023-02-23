@@ -7,12 +7,15 @@ import Modal from "components/Modal";
 import { useRecoilState } from "recoil";
 import { modalState } from "/atoms/modalAtom";
 import Widgets from "components/Widgets";
+import { modalTweetState } from "atoms/modalAtom";
+import TweetModal from "components/TweetModal";
 
 
 export default function Home({trendingResults, followResults, providers}) {
 
   const { data: session } = useSession()
   const [isOpen, setIsOpen] = useRecoilState(modalState);
+  const [isTweetOpen, setIsTweetOpen] = useRecoilState(modalTweetState);
 
   if (!session) return <Login providers={providers} />
   
@@ -31,6 +34,7 @@ export default function Home({trendingResults, followResults, providers}) {
         <Widgets trendingResults={trendingResults} followResults={followResults}/>
 
         {isOpen && <Modal />}
+        {isTweetOpen && <TweetModal />}
       </main>
     </>
   );

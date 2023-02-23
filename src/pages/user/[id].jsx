@@ -28,6 +28,18 @@ function User({ trendingResults, followResults, providers }) {
   const [userPost, setUserPost] = useState();
   const [posts, setPosts] = useState();
 
+  // async function getPost() {
+  //   const result = await (
+  //     await getDocs(query(collection(db, "posts"), where("id", "==", id)))
+  //   ).data;
+  //   setUserPost(result)
+
+  // }
+  //  useEffect(() => {
+  //   getPost()
+  //   console.log(userPost)
+  //  },[])
+
   
 
   if (!session) return <Login providers={providers} />;
@@ -44,9 +56,7 @@ function User({ trendingResults, followResults, providers }) {
       <main className="bg-black min-h-screen flex max-w-[1500px] mx-auto">
         <Sidebar />
         <Profile user={session?.user} post={posts} />
-        <div className="text-white">
-          {/* <button className="bg-white text-black" onClick={getPosts}>click me</button> */}
-        </div>
+        <Widgets trendingResults={trendingResults} followResults={followResults}/>
 
         {isOpen && <Modal />}
       </main>
