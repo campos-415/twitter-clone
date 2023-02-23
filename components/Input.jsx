@@ -87,14 +87,16 @@ function Input() {
         src={session.user.image}
         alt="userImg"
       />
-      <div className="w-full">
+      <div className="w-full pb-6">
         <div className={`${selectedFile && "pb-7"} ${input && "space-y-2.5"}`}>
           <textarea
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            rows="2"
+            rows="4"
             placeholder="What's happening?"
-            className="bg-transparent outline-none text-[#d9d9d9] text-lg placeholder-gray-500 tracking-wide w-full min-h-[50px]"
+            className="bg-transparent outline-none text-[#d9d9d9] 
+            text-lg placeholder-gray-500 tracking-wide w-full min-h-[50px] 
+            focus:border-b focus:border-[#1d9bf0]"
           />
           {selectedFile && (
             <div className="relative">

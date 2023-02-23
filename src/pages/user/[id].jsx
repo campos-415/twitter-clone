@@ -19,26 +19,36 @@ import {
 } from "firebase/firestore";
 import { useRouter } from "next/router";
 import { async } from "@firebase/util";
+import { modalTweetState } from "atoms/modalAtom";
+import TweetModal from "components/TweetModal";
 
 function User({ trendingResults, followResults, providers }) {
   const { data: session } = useSession();
   const [isOpen, setIsOpen] = useRecoilState(modalState);
   const router = useRouter();
   const { id } = router.query;
-  const [userPost, setUserPost] = useState();
+  const [userPost, setUserPost] = useState([]);
   const [posts, setPosts] = useState();
+  const [isTweetOpen, setIsTweetOpen] = useRecoilState(modalTweetState);
 
   // async function getPost() {
-  //   const result = await (
-  //     await getDocs(query(collection(db, "posts"), where("id", "==", id)))
-  //   ).data;
-  //   setUserPost(result)
+  //   const q = query(collection(db, "posts"), where("id", "==", id));
+  //   const querySnapshot = await getDocs(q);
+  //   querySnapshot.forEach((doc) => {
+  //     // doc.data() is never undefined for query doc snapshots
+  //     console.log(doc.id, " => ", doc.data());
+      
+  //   });
 
   // }
   //  useEffect(() => {
-  //   getPost()
+  //   // getPost()
   //   console.log(userPost)
-  //  },[])
+  //   setUserPost((userPost) =>
+  //       [...userPost,
+  //       getPost()]
+  //     )
+  //  },[id])
 
   
 
@@ -59,6 +69,7 @@ function User({ trendingResults, followResults, providers }) {
         <Widgets trendingResults={trendingResults} followResults={followResults}/>
 
         {isOpen && <Modal />}
+        {isTweetOpen && <TweetModal />}
       </main>
     </>
   );

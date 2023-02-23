@@ -1,10 +1,11 @@
 import { ArrowLeftIcon } from "@heroicons/react/outline";
 import { useRouter } from "next/router";
+import Input from "./Input";
 import Post from "./Post";
 
 function Profile({ user, userPosts }) {
   const router = useRouter();
-  console.log(user)
+  console.log(userPosts)
 
   return (
     <div className="flex-grow border-l border-r border-gray-700 max-w-2xl sm:ml-[72px] xl:ml-[370px]">
@@ -21,11 +22,23 @@ function Profile({ user, userPosts }) {
           <img src="/backdropImg.jpeg" alt="" />
           <img src={user.image} className="rounded-full w-[150px] border-[6px] border-black absolute top-[150px] left-[2%]" alt="" />
         </div>
-        <div className="flex flex-col pt-[110px] pb-8 ml-4">
+        <div className="flex flex-col pb-8 pt-[150px] ml-4 xl:pt-[100px]">
           <h3 className="text-[24px] text-white font-bold ">{user.name}</h3>
           <h4 className="text-[16px] text-[#d9d9d97f]">@{user.tag}</h4>
-        
+        </div> 
+        <div className="text-white mb-3">
+          <p className="ml-4 text-sm">💻 📷</p>
         </div>
+        <div className="pb-11 text-[#d9d9d97f] flex flex-wrap text-left text-sm max-w-[85%]  ml-4 ">
+          <p className="pb-2 text-left mr-3">📷 Photographer</p>
+          <p className="pb-2 text-left mr-3">📍 San Francisco, CA</p>
+          <p className="pb-2 text-left mr-3">🎈 Born May 9, 1998</p>
+          <p className="pb-2 text-left mr-3">🗓️ Join September 2014</p>
+        </div>
+      </div>
+     
+      <div>
+        <Input />
       </div>
       <div className="pb-72">
         {userPosts?.map((post) => (
