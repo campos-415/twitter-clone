@@ -1,7 +1,7 @@
 import { useRecoilState } from "recoil";
 import { modalState, postIdState } from "../atoms/modalAtom";
 import { Dialog, Transition } from "@headlessui/react";
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import {
   onSnapshot,
   doc,
@@ -20,7 +20,7 @@ import {
 } from "@heroicons/react/outline";
 import { useRouter } from "next/router";
 import Moment from "react-moment";
-import Input from "./Input";
+import EmojiPicker, { Picker } from "@emoji-mart/react";
 
 function Modal() {
   const { data: session } = useSession();
@@ -29,18 +29,30 @@ function Modal() {
   const [post, setPost] = useState();
   const [comment, setComment] = useState("");
   const router = useRouter();
+  const [input, setInput] = useState("");
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [showEmojis, setShowEmojis] = useState(false);
+  const filePickerRef = useRef(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(
     () =>
       onSnapshot(doc(db, "posts", postId), (snapshot) => {
         setPost(snapshot.data());
-        console.log(postId)
-        console.log(snapshot.data())
+        console.log(postId);
+        console.log(snapshot.data());
       }),
     [postId]
   );
 
-
+  // function to add emoji to input field
+  const addEmoji = (e) => {
+    let sym = e.unified.split("-");
+    let codesArray = [];
+    sym.forEach((el) => codesArray.push("0x" + el));
+    let emoji = String.fromCodePoint(...codesArray);
+    setInput(input + emoji);
+  };
 
   const sendComment = async (e) => {
     e.preventDefault();
@@ -51,19 +63,45 @@ function Modal() {
       tag: session.user.tag,
       userImg: session.user.image,
       timestamp: serverTimestamp(),
-      id:session.user.uid
+      id: session.user.uid,
     });
 
+    const imageRef = ref(storage, `posts/${docRef.id}/image`);
+
+    if (selectedFile) {
+      await uploadString(imageRef, selectedFile, "data_url").then(async () => {
+        const downloadURL = await getDownloadURL(imageRef);
+        await updateDoc(doc(db, "posts", docRef.id), {
+          image: downloadURL,
+        });
+      });
+    }
+
+    setInput("");
+    setSelectedFile(null);
+    setShowEmojis(false);
     setIsOpen(false);
     setComment("");
 
     router.push(`/${postId}`);
   };
 
+  const addImageToPost = (e) => {
+    const reader = new FileReader();
+    if (e.target.files[0]) {
+      reader.readAsDataURL(e.target.files[0]);
+    }
+
+    reader.onload = (readerEvent) => {
+      setSelectedFile(readerEvent.target.result);
+    };
+  };
+
   return (
     <Transition.Root show={isOpen} as={Fragment}>
       <Dialog as="div" className="fixed z-50 inset-0 pt-8" onClose={setIsOpen}>
-        <div className="flex items-start justify-center min-h-[800px] sm:min-h-screen 
+        <div
+          className="flex items-start justify-center min-h-[800px] sm:min-h-screen 
         pt-4 px-4 pb-20 text-center sm:block sm:p-0">
           <Transition.Child
             as={Fragment}
@@ -84,8 +122,9 @@ function Modal() {
             leave="ease-in duration-200"
             leaveFrom="opacity-100 translate-y-0 sm:scale-100"
             leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
-            <div className=" inline-block align-bottom bg-black rounded-2xl text-left overflow-hidden 
-            shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-xl sm:w-full">
+            <div
+              className={`inline-block align-bottom bg-black rounded-2xl ${showEmojis && "h-[750px]"} text-left overflow-hidden 
+            shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-xl sm:w-full`}>
               <div className="flex w-full items-center px-1.5 pt-2 ">
                 <div
                   className="hoverAnimation w-9 h-9 flex items-center justify-center xl:px-0"
@@ -135,33 +174,71 @@ function Modal() {
                         rows="2"
                         className="bg-transparent outline-none text-[#d9d9d9] text-lg placeholder-gray-500 tracking-wide w-full min-h-[80px]"
                       />
-
-                      <div className="flex items-center justify-between pt-2.5">
-                        <div className="flex items-center">
-                          <div className="icon">
-                            <PhotographIcon className="text-[#1d9bf0] h-[22px]" />
+                      {selectedFile && (
+                        <div className="relative">
+                          <div
+                            className="absolute w-8 h-8 bg-[#15181c] hover:bg-[#272c26] 
+                            bg-opacity-75 rounded-full flex items-center justify-center top-1 left-1 
+                            cursor-pointer"
+                            onClick={() => setSelectedFile(null)}>
+                            <XIcon className="text-white h-5" />
                           </div>
-
-                          <div className="icon rotate-90">
-                            <ChartBarIcon className="text-[#1d9bf0] h-[22px]" />
-                          </div>
-
-                          <div className="icon">
-                            <EmojiHappyIcon className="text-[#1d9bf0] h-[22px]" />
-                          </div>
-
-                          <div className="icon">
-                            <CalendarIcon className="text-[#1d9bf0] h-[22px]" />
-                          </div>
+                          <img
+                            src={selectedFile}
+                            alt="userImg"
+                            className="rounded-2xl max-h-80 object-contain"
+                          />
                         </div>
-                        <button
-                          className="bg-[#1d9bf0] text-white rounded-full px-4 py-1.5 font-bold shadow-md hover:bg-[#1a8cd8] disabled:hover:bg-[#1d9bf0] disabled:opacity-50 disabled:cursor-default"
-                          type="submit"
-                          onClick={sendComment}
-                          disabled={!comment.trim()}>
-                          Reply
-                        </button>
-                      </div>
+                      )}
+
+                      {!loading && (
+                        <div className="flex items-center justify-between pt-2.5">
+                          <div className="flex items-center">
+                            <div
+                              className="icon"
+                              onClick={() => filePickerRef.current.click()}>
+                              <PhotographIcon className="text-[#1d9bf0] h-[22px]" />
+                              <input
+                                type="file"
+                                ref={filePickerRef}
+                                hidden
+                                onChange={addImageToPost}
+                              />
+                            </div>
+
+                            <div className="icon rotate-90">
+                              <ChartBarIcon className="text-[#1d9bf0] h-[22px]" />
+                            </div>
+
+                            <div
+                              className="icon"
+                              onClick={() => setShowEmojis(!showEmojis)}>
+                              <EmojiHappyIcon className="text-[#1d9bf0] h-[22px]" />
+                            </div>
+
+                            <div className="icon">
+                              <CalendarIcon className="text-[#1d9bf0] h-[22px]" />
+                            </div>
+
+                            {showEmojis && (
+                              <div className="-ml-9 absolute mt-[465px] xl:ml-0 ">
+                                <EmojiPicker
+                                  onEmojiSelect={addEmoji}
+                                  theme="lightdark"
+                                />
+                              </div>
+                            )}
+                          </div>
+                          <button
+                            className="bg-[#1d9bf0] text-white rounded-full px-4 py-1.5 
+                            font-bold shadow-md hover:bg-[#1a8cd8] disabled:hover:bg-[#1d9bf0] 
+                            disabled:opacity-50 disabled:cursor-default"
+                            disabled={!input.trim() && !selectedFile}
+                            onClick={sendComment}>
+                            Tweet
+                          </button>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>

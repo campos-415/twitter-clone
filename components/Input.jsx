@@ -19,8 +19,7 @@ import Picker from "@emoji-mart/react";
 import { useSession } from "next-auth/react";
 
 function Input() {
-  
-  const { data: session } = useSession()
+  const { data: session } = useSession();
 
   const [input, setInput] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
@@ -36,7 +35,6 @@ function Input() {
     let emoji = String.fromCodePoint(...codesArray);
     setInput(input + emoji);
   };
-
 
   const sendPost = async () => {
     if (loading) return;
@@ -62,26 +60,28 @@ function Input() {
       });
     }
 
-    setLoading(false)
-    setInput("")
-    setSelectedFile(null)
-    setShowEmojis(false)
+    setLoading(false);
+    setInput("");
+    setSelectedFile(null);
+    setShowEmojis(false);
   };
 
   const addImageToPost = (e) => {
-    const reader = new FileReader()
+    const reader = new FileReader();
     if (e.target.files[0]) {
-      reader.readAsDataURL(e.target.files[0])
+      reader.readAsDataURL(e.target.files[0]);
     }
 
     reader.onload = (readerEvent) => {
-      setSelectedFile(readerEvent.target.result)
-    }
-  }
+      setSelectedFile(readerEvent.target.result);
+    };
+  };
 
   return (
     <div
-      className={`border-b border-gray-700 p-3 flex  space-x-3 overflow-y-scroll ${loading && "opacity-60"}`}>
+      className={`border-b border-gray-700 p-3 flex  space-x-3 overflow-y-scroll ${
+        loading && "opacity-60"
+      }`}>
       <img
         className="w-11 h-11 rounded-full cursor-pointer"
         src={session.user.image}
@@ -117,44 +117,46 @@ function Input() {
         </div>
         {!loading && (
           <div className="flex items-center justify-between pt-2.5">
-          <div className="flex items-center">
-            <div className="icon" onClick={() => filePickerRef.current.click()}>
-              <PhotographIcon className="text-[#1d9bf0] h-[22px]" />
-              <input
-                type="file"
-                ref={filePickerRef}
-                hidden
-                onChange={addImageToPost}
-              />
-            </div>
-
-            <div className="icon rotate-90">
-              <ChartBarIcon className="text-[#1d9bf0] h-[22px]" />
-            </div>
-
-            <div className="icon" onClick={() => setShowEmojis(!showEmojis)}>
-              <EmojiHappyIcon className="text-[#1d9bf0] h-[22px]" />
-            </div>
-
-            <div className="icon">
-              <CalendarIcon className="text-[#1d9bf0] h-[22px]" />
-            </div>
-
-            {showEmojis && (
-              <div className="-ml-9 absolute mt-[465px] xl:ml-0 ">
-                <Picker onEmojiSelect={addEmoji} theme="lightdark" />
+            <div className="flex items-center">
+              <div
+                className="icon"
+                onClick={() => filePickerRef.current.click()}>
+                <PhotographIcon className="text-[#1d9bf0] h-[22px]" />
+                <input
+                  type="file"
+                  ref={filePickerRef}
+                  hidden
+                  onChange={addImageToPost}
+                />
               </div>
-            )}
-          </div>
-          <button
-            className="bg-[#1d9bf0] text-white rounded-full px-4 py-1.5 
+
+              <div className="icon rotate-90">
+                <ChartBarIcon className="text-[#1d9bf0] h-[22px]" />
+              </div>
+
+              <div className="icon" onClick={() => setShowEmojis(!showEmojis)}>
+                <EmojiHappyIcon className="text-[#1d9bf0] h-[22px]" />
+              </div>
+
+              <div className="icon">
+                <CalendarIcon className="text-[#1d9bf0] h-[22px]" />
+              </div>
+
+              {showEmojis && (
+                <div className="-ml-9 absolute mt-[465px] xl:ml-0 ">
+                  <Picker onEmojiSelect={addEmoji} theme="lightdark" />
+                </div>
+              )}
+            </div>
+            <button
+              className="bg-[#1d9bf0] text-white rounded-full px-4 py-1.5 
             font-bold shadow-md hover:bg-[#1a8cd8] disabled:hover:bg-[#1d9bf0] 
             disabled:opacity-50 disabled:cursor-default"
-            disabled={!input.trim() && !selectedFile}
-            onClick={sendPost}>
-            Tweet
-          </button>
-        </div>
+              disabled={!input.trim() && !selectedFile}
+              onClick={sendPost}>
+              Tweet
+            </button>
+          </div>
         )}
       </div>
     </div>

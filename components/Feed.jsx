@@ -19,6 +19,7 @@ function Feed() {
         query(collection(db, "posts"), orderBy("timestamp", "desc")),
         (snapshot) => {
           setPosts(snapshot.docs);
+          console.log(snapshot.docs)
         }
       ),
     [db]
@@ -26,7 +27,6 @@ function Feed() {
 
   useEffect(() => {
     setUserId(session?.user?.uid);
-    console.log()
   }, [db]);
 
 
