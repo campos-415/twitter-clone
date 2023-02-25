@@ -1,8 +1,18 @@
-import { ChartBarIcon, ChatIcon, DotsHorizontalIcon, HeartIcon, ShareIcon } from "@heroicons/react/outline";
+import { ChartBarIcon, ChatIcon, DotsHorizontalIcon, HeartIcon, ShareIcon, SwitchHorizontalIcon, TrashIcon } from "@heroicons/react/outline";
+import { db } from "/firebase";
+import { deleteDoc, doc } from "firebase/firestore";
 import React from "react";
 import Moment from "react-moment";
+import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
+import { useRecoilState } from "recoil";
+import { userPosts } from "atoms/modalAtom";
 
 function Comment({ id, comment }) {
+  const router = useRouter()
+  const { data: session } = useSession()
+  const [post, setPost] = useRecoilState(userPosts)
+
   return (
     <div className="p-3 flex cursor-pointer border-b border-gray-700">
       <img
@@ -34,9 +44,6 @@ function Comment({ id, comment }) {
           </div>
         </div>
         <div className="text-[#6e767d] flex justify-between w-10/12">
-          <div className="icon group">
-            <ChatIcon className="h-5 group-hover:text-[#1d9bf0]" />
-          </div>
 
           <div className="flex items-center space-x-1 group">
             <div className="icon group-hover:bg-pink-600/10">
@@ -48,9 +55,27 @@ function Comment({ id, comment }) {
           <div className="icon group">
             <ShareIcon className="h-5 group-hover:text-[#1d9bf0]" />
           </div>
-          <div className="icon group">
-            <ChartBarIcon className="h-5 group-hover:text-[#1d9bf0]" />
-          </div>
+          {session.user.uid === comment.id ? (
+            <div
+              className="flex items-center space-x-1 group"
+              onClick={(e) => {
+                e.stopPropagation();
+                deleteDoc(doc(db, "posts", id));
+                router.push("/");
+              }}
+            >
+              <div className="icon group-hover:bg-red-600/10">
+                <TrashIcon className="h-5 group-hover:text-red-600" />
+              </div>
+            </div>
+          ) : (
+            <div className="flex items-center space-x-1 group">
+              <div className="icon group-hover:bg-green-500/10">
+                <SwitchHorizontalIcon className="h-5 group-hover:text-green-500" />
+              </div>
+            </div>
+          )}
+
         </div>
       </div>
     </div>

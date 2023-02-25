@@ -51,6 +51,7 @@ function Modal() {
       tag: session.user.tag,
       userImg: session.user.image,
       timestamp: serverTimestamp(),
+      id:session.user.uid
     });
 
     setIsOpen(false);

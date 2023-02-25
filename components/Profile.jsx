@@ -1,11 +1,27 @@
 import { ArrowLeftIcon } from "@heroicons/react/outline";
+import { db } from "/firebase";
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import Input from "./Input";
 import Post from "./Post";
+import { collection, onSnapshot, orderBy, query, where } from "firebase/firestore";
+import { useSession } from "next-auth/react";
 
-function Profile({ user, userPosts }) {
+function Profile({ user }) {
   const router = useRouter();
-  console.log(userPosts)
+  const [posts, setPosts] = useState([])
+  const { data: session } = useSession()
+  const id = user.id || session.user.uid
+  useEffect (
+    () =>
+      onSnapshot(
+        query(collection(db, "posts"),where("id", "==", id), orderBy("timestamp", "desc")),
+        (snapshot) => {
+          setPosts(snapshot.docs);
+        }
+      ),
+    [db]
+  );
 
   return (
     <div className="flex-grow border-l border-r border-gray-700 max-w-2xl sm:ml-[72px] xl:ml-[370px]">
@@ -15,15 +31,15 @@ function Profile({ user, userPosts }) {
           onClick={() => router.push(`/`)}>
           <ArrowLeftIcon className="h-5 text-white" />
         </div>
-        <h4 className="text-lg font-bold">{user.name}</h4>
+        <h4 className="text-lg font-bold">{user.name || user.username}</h4>
       </div>
       <div className=" flex flex-col relative max-w-2xl border-b border-gray-700">
         <div className="">
           <img src="/backdropImg.jpeg" alt="" />
-          <img src={user.image} className="rounded-full w-[150px] border-[6px] border-black absolute top-[150px] left-[2%]" alt="" />
+          <img src={user.userImg|| user.image} className="rounded-full w-[150px] border-[6px] border-black absolute top-[150px] left-[2%]" alt="" />
         </div>
         <div className="flex flex-col pb-8 pt-[150px] ml-4 xl:pt-[100px]">
-          <h3 className="text-[24px] text-white font-bold ">{user.name}</h3>
+          <h3 className="text-[24px] text-white font-bold ">{user.name || user.username}</h3>
           <h4 className="text-[16px] text-[#d9d9d97f]">@{user.tag}</h4>
         </div> 
         <div className="text-white mb-3">
@@ -38,10 +54,10 @@ function Profile({ user, userPosts }) {
       </div>
      
       <div>
-        <Input />
+        {!user.text && <Input /> }
       </div>
       <div className="pb-72">
-        {userPosts?.map((post) => (
+        {posts?.map((post) => (
           <Post key={post.id} id={post.id} post={post.data()} />
         ))}
       </div>

@@ -32,11 +32,13 @@ function Post({ id, post, postPage }) {
   const { data: session } = useSession();
   const [isOpen, setIsOpen] = useRecoilState(modalState);
   const [postId, setPostId] = useRecoilState(postIdState);
+  const [userPost, setUserPost] = useRecoilState(userPosts);
   const [comments, setComments] = useState([]);
+  const [userId, setUserId] = useState(post?.id)
   const [likes, setLikes] = useState([]);
   const [liked, setLiked] = useState(false);
-  const [userPost, setUserPost] = useRecoilState(userPosts)
   const router = useRouter();
+  
 
   useEffect(
     () =>
@@ -76,6 +78,14 @@ function Post({ id, post, postPage }) {
     }
   };
 
+  function getUserPage(e) {
+    setUserPost(post)
+    router.push(`/users/${userId}`)
+    e.stopPropagation()
+    // console.log(userPost)
+    
+  }
+
   return (
     <div
       className="p-3 flex cursor-pointer border-b border-gray-700"
@@ -98,7 +108,7 @@ function Post({ id, post, postPage }) {
             />
           )}
           <div className="text-[#6e767d]">
-            <div className="inline-block group">
+            <div className="inline-block group" onClick={(e) => getUserPage(e)}>
               <h4
                 className={`font-bold text-[15px] sm:text-base text-[#d9d9d9] group-hover:underline ${
                   !postPage && "inline-block"

@@ -26,6 +26,7 @@ function Feed() {
 
   useEffect(() => {
     setUserId(session?.user?.uid);
+    console.log()
   }, [db]);
 
 
