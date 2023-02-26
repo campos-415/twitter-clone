@@ -1,6 +1,5 @@
 import {
   ArrowCircleLeftIcon,
-  DotsHorizontalIcon,
   SparklesIcon,
 } from "@heroicons/react/outline";
 import { useEffect, useState } from "react";
@@ -23,7 +22,6 @@ function Feed() {
         query(collection(db, "posts"), orderBy("timestamp", "desc")),
         (snapshot) => {
           setPosts(snapshot.docs);
-          console.log(snapshot.docs);
         }
       ),
     [db]

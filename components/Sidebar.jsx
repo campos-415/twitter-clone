@@ -79,7 +79,7 @@ function Sidebar() {
       </button>
       <div
         className="text-[#d9d9d9] flex items-center justify-center mt-auto hoverAnimation ml-auto xl:-mr-5"
-        onClick={() => router.push(`/user/settings/`)}>
+        onClick={() => router.push(`/user/${session.user.uid}/`)}>
         <img
           src={session?.user?.image}
           className="h-10 w-10 rounded-full xl:mr-2.5"
