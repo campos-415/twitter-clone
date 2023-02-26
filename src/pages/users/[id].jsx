@@ -1,39 +1,23 @@
 import Head from "next/head";
-import Sidebar from "components/Sidebar";
 import { getProviders, getSession, useSession } from "next-auth/react";
 import Login from "components/Login";
 import Modal from "components/Modal";
 import { useRecoilState } from "recoil";
 import { modalState, userPosts } from "/atoms/modalAtom";
 import Widgets from "components/Widgets";
-import { use, useEffect, useState } from "react";
 import Profile from "components/Profile";
-import { db } from "/firebase";
-import {
-  collection,
-  getDocs,
-  onSnapshot,
-  orderBy,
-  query,
-  where,
-} from "firebase/firestore";
-import { useRouter } from "next/router";
-import { async } from "@firebase/util";
 import { modalTweetState } from "atoms/modalAtom";
 import TweetModal from "components/TweetModal";
+import Sidebar from "components/Sidebar";
 
 function User({ trendingResults, followResults, providers }) {
   const { data: session } = useSession();
   const [isOpen, setIsOpen] = useRecoilState(modalState);
   const [userPost, setUserPost] = useRecoilState(userPosts);
-  const [posts, setPosts] = useState();
   const [isTweetOpen, setIsTweetOpen] = useRecoilState(modalTweetState);
 
   if (!session) return <Login providers={providers} />;
-  
-  function getpost() {
-    
-  }
+
 
   return (
     <>

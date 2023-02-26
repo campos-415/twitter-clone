@@ -34,11 +34,10 @@ function Post({ id, post, postPage }) {
   const [postId, setPostId] = useRecoilState(postIdState);
   const [userPost, setUserPost] = useRecoilState(userPosts);
   const [comments, setComments] = useState([]);
-  const [userId, setUserId] = useState(post?.id)
+  const [userId, setUserId] = useState(post?.id);
   const [likes, setLikes] = useState([]);
   const [liked, setLiked] = useState(false);
   const router = useRouter();
-  
 
   useEffect(
     () =>
@@ -79,18 +78,21 @@ function Post({ id, post, postPage }) {
   };
 
   function getUserPage(e) {
-    setUserPost(post)
-    router.push(`/users/${userId}`)
-    e.stopPropagation()
+    e.stopPropagation();
+    setUserPost(post);
+    if (userId === session.user.uid) {
+      router.push(`/user/${session.user.uid}`);
+    } else {
+      router.push(`/users/${userId}`);
+    }
+
     // console.log(userPost)
-    
   }
 
   return (
     <div
       className="p-3 flex cursor-pointer border-b border-gray-700"
-      onClick={() => router.push(`/${id}`)}
-    >
+      onClick={() => router.push(`/${id}`)}>
       {!postPage && (
         <img
           src={post?.userImg}
@@ -112,13 +114,11 @@ function Post({ id, post, postPage }) {
               <h4
                 className={`font-bold text-[15px] sm:text-base text-[#d9d9d9] group-hover:underline ${
                   !postPage && "inline-block"
-                }`}
-              >
+                }`}>
                 {post?.username}
               </h4>
               <span
-                className={`text-sm sm:text-[15px] ${!postPage && "ml-1.5"}`}
-              >
+                className={`text-sm sm:text-[15px] ${!postPage && "ml-1.5"}`}>
                 @{post?.tag}
               </span>
             </div>
@@ -147,16 +147,14 @@ function Post({ id, post, postPage }) {
         <div
           className={`text-[#6e767d] flex justify-between w-10/12 ${
             postPage && "mx-auto"
-          }`}
-        >
+          }`}>
           <div
             className="flex items-center space-x-1 group"
             onClick={(e) => {
               e.stopPropagation();
               setPostId(id);
               setIsOpen(true);
-            }}
-          >
+            }}>
             <div className="icon group-hover:bg-[#1d9bf0] group-hover:bg-opacity-10">
               <ChatIcon className="h-5 group-hover:text-[#1d9bf0]" />
             </div>
@@ -174,8 +172,7 @@ function Post({ id, post, postPage }) {
                 e.stopPropagation();
                 deleteDoc(doc(db, "posts", id));
                 router.push("/");
-              }}
-            >
+              }}>
               <div className="icon group-hover:bg-red-600/10">
                 <TrashIcon className="h-5 group-hover:text-red-600" />
               </div>
@@ -193,8 +190,7 @@ function Post({ id, post, postPage }) {
             onClick={(e) => {
               e.stopPropagation();
               likePost();
-            }}
-          >
+            }}>
             <div className="icon group-hover:bg-pink-600/10">
               {liked ? (
                 <HeartIconFilled className="h-5 text-pink-600" />
@@ -206,8 +202,7 @@ function Post({ id, post, postPage }) {
               <span
                 className={`group-hover:text-pink-600 text-sm ${
                   liked && "text-pink-600"
-                }`}
-              >
+                }`}>
                 {likes.length}
               </span>
             )}

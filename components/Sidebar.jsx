@@ -10,47 +10,43 @@ import {
   UserIcon,
   DotsCircleHorizontalIcon,
   DotsHorizontalIcon,
-  ArrowCircleLeftIcon
+  ArrowCircleLeftIcon,
 } from "@heroicons/react/outline";
 import { HomeIcon } from "@heroicons/react/solid";
 import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import { doc, onSnapshot } from "firebase/firestore";
-import { Snapshot, useRecoilState } from "recoil";
-import { db } from "../firebase";
+import { useRecoilState } from "recoil";
+
 import Link from "next/link";
 import { modalTweetState, postIdState } from "atoms/modalAtom";
 
 function Sidebar() {
   const { data: session } = useSession();
   const [userId, setUserId] = useState();
-  const [postId, setPostId] = useRecoilState(postIdState)
-  const [isTweetOpen, setIsTweetOpen] = useRecoilState(modalTweetState)
+  const [postId, setPostId] = useRecoilState(postIdState);
+  const [isTweetOpen, setIsTweetOpen] = useRecoilState(modalTweetState);
   const router = useRouter();
-
 
   useEffect(() => {
     setUserId(session?.user?.uid);
-    // console.log(userId)
-  }, [db]);
+  }, []);
 
   return (
     <div
       className="hidden sm:flex flex-col 
     items-center xl:items-start xl:w-[340px]
     p-2 fixed h-full">
-      <div 
+      <div
         className="flex items-center 
       justify-center w-14 h-14 hoverAnimation 
       p-0 xl:ml-24">
-        <Link href='/'>
+        <Link href="/">
           <Image
-          src="https://rb.gy/ogau5a"
-          width={30}
-          height={30}
-          alt="LogoImg"
-          
-        />
+            src="https://rb.gy/ogau5a"
+            width={30}
+            height={30}
+            alt="LogoImg"
+          />
         </Link>
       </div>
       <div className="space-y-2.5 mt-4 mb-2.5 xl:ml-24">
@@ -62,7 +58,7 @@ function Sidebar() {
         <SidebarLink text="Messages" Icon={InboxIcon} />
         <SidebarLink text="Bookmarks" Icon={BookmarkIcon} />
         <SidebarLink text="Lists" Icon={ClipboardListIcon} />
-        <div onClick={() => router.push(`/user/${userId}`)}>
+        <div onClick={() => router.push(`/user/${session.user.uid}`)}>
           <SidebarLink text="Profile" Icon={UserIcon} />
         </div>
         <SidebarLink text="More" Icon={DotsCircleHorizontalIcon} />
@@ -70,7 +66,7 @@ function Sidebar() {
           <SidebarLink text="Sign Out" Icon={ArrowCircleLeftIcon} />
         </div>
       </div>
-      
+
       <button
         onClick={(e) => {
           e.stopPropagation();
@@ -83,7 +79,7 @@ function Sidebar() {
       </button>
       <div
         className="text-[#d9d9d9] flex items-center justify-center mt-auto hoverAnimation ml-auto xl:-mr-5"
-        onClick={signOut}>
+        onClick={() => router.push(`/user/settings/`)}>
         <img
           src={session?.user?.image}
           className="h-10 w-10 rounded-full xl:mr-2.5"

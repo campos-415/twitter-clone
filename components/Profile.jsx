@@ -4,18 +4,28 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Input from "./Input";
 import Post from "./Post";
-import { collection, onSnapshot, orderBy, query, where } from "firebase/firestore";
+import {
+  collection,
+  onSnapshot,
+  orderBy,
+  query,
+  where,
+} from "firebase/firestore";
 import { useSession } from "next-auth/react";
 
 function Profile({ user }) {
   const router = useRouter();
-  const [posts, setPosts] = useState([])
-  const { data: session } = useSession()
-  const id = user.id || session.user.uid
-  useEffect (
+  const [posts, setPosts] = useState([]);
+  const { data: session } = useSession();
+  const id = user.id || session.user.uid;
+  useEffect(
     () =>
       onSnapshot(
-        query(collection(db, "posts"),where("id", "==", id), orderBy("timestamp", "desc")),
+        query(
+          collection(db, "posts"),
+          where("id", "==", id),
+          orderBy("timestamp", "desc")
+        ),
         (snapshot) => {
           setPosts(snapshot.docs);
         }
@@ -36,12 +46,18 @@ function Profile({ user }) {
       <div className=" flex flex-col relative max-w-2xl border-b border-gray-700">
         <div className="">
           <img src="/backdropImg.jpeg" alt="" />
-          <img src={user.userImg|| user.image} className="rounded-full w-[150px] border-[6px] border-black absolute top-[150px] left-[2%]" alt="" />
+          <img
+            src={user.userImg || user.image}
+            className="rounded-full w-[150px] border-[6px] border-black absolute top-[150px] left-[2%]"
+            alt=""
+          />
         </div>
         <div className="flex flex-col pb-8 pt-[150px] ml-4 xl:pt-[100px]">
-          <h3 className="text-[24px] text-white font-bold ">{user.name || user.username}</h3>
+          <h3 className="text-[24px] text-white font-bold ">
+            {user.name || user.username}
+          </h3>
           <h4 className="text-[16px] text-[#d9d9d97f]">@{user.tag}</h4>
-        </div> 
+        </div>
         <div className="text-white mb-3">
           <p className="ml-4 text-sm">💻 📷</p>
         </div>
@@ -52,10 +68,8 @@ function Profile({ user }) {
           <p className="pb-2 text-left mr-3">🗓️ Join September 2014</p>
         </div>
       </div>
-     
-      <div>
-        {!user.text && <Input /> }
-      </div>
+
+      <div>{!user.text && <Input />}</div>
       <div className="pb-72">
         {posts?.map((post) => (
           <Post key={post.id} id={post.id} post={post.data()} />

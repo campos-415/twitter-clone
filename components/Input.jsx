@@ -17,13 +17,15 @@ import { getDownloadURL, ref, uploadString } from "@firebase/storage";
 import React, { useRef, useState } from "react";
 import Picker from "@emoji-mart/react";
 import { useSession } from "next-auth/react";
+import { useRecoilState } from "recoil";
+import { showEmoji } from "atoms/modalAtom";
 
 function Input() {
   const { data: session } = useSession();
 
   const [input, setInput] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
-  const [showEmojis, setShowEmojis] = useState(false);
+  const [showEmojis, setShowEmojis] = useRecoilState(showEmoji);
   const filePickerRef = useRef(null);
   const [loading, setLoading] = useState(false);
 

@@ -17,7 +17,7 @@ export const authOptions = {
       .join("_")
       .toLocaleLowerCase()
       session.user.uid = token.sub
-
+ 
       return session
     },
   },

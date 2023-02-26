@@ -8,6 +8,10 @@ export const modalTweetState = atom({
   key: "modalTweetState",
   default: false,
 })
+export const showEmoji = atom({
+  key: "showEmojiState",
+  default: false,
+})
 
 export const postIdState = atom({
   key: "postIdState",

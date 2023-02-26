@@ -1,24 +1,18 @@
-import { db } from '/firebase'
-import { doc, onSnapshot } from 'firebase/firestore'
-import { useSession } from 'next-auth/react'
-import { useRouter } from 'next/router'
-import React, { useEffect, useState } from 'react'
+import { useRouter } from "next/router";
 
-function SidebarLink({Icon, text, active, id}) {
-  const router = useRouter()
-
- 
+function SidebarLink({ Icon, text, active }) {
   return (
     <>
       <div
-    className={`text-[#d9d9d9] flex items-center justify-center
-    xl:justify-start text-xl space-x-3 hoverAnimation ${active && 'font-bold'}`}>
-      <Icon className="h-7 text-white" />
-      <span className="hidden xl:inline">{text}</span>
-    </div>
+        className={`text-[#d9d9d9] flex items-center justify-center
+    xl:justify-start text-xl space-x-3 hoverAnimation ${
+      active && "font-bold"
+    }`}>
+        <Icon className="h-7 text-white" />
+        <span className="hidden xl:inline">{text}</span>
+      </div>
     </>
-    
-  )
+  );
 }
 
-export default SidebarLink
+export default SidebarLink;

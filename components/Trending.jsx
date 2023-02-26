@@ -1,9 +1,7 @@
 import { DotsHorizontalIcon } from "@heroicons/react/outline";
 import Image from "next/image";
 
-
 function Trending({ result }) {
-
   return (
     <div className="hover:bg-white hover:bg-opacity-[0.03] px-4 py-2 cursor-pointer transition duration-200 ease-out flex items-center justify-between">
       <div className="space-y-0.5">
@@ -39,4 +37,4 @@ function Trending({ result }) {
   );
 }
 
-export default Trending
+export default Trending;

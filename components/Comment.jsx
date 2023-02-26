@@ -1,28 +1,16 @@
 import {
-  ChartBarIcon,
-  ChatIcon,
   DotsHorizontalIcon,
   HeartIcon,
   ShareIcon,
   SwitchHorizontalIcon,
   TrashIcon,
 } from "@heroicons/react/outline";
-import { db } from "/firebase";
-import {
-  deleteDoc,
-  doc,
-  deleteField,
-  where,
-  collection,
-  getDoc,
-} from "firebase/firestore";
 import React from "react";
 import Moment from "react-moment";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 
-function Comment({ id, comment, post }) {
-  const router = useRouter();
+function Comment({ comment }) {
   const { data: session } = useSession();
 
   return (

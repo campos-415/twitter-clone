@@ -1,5 +1,5 @@
 import { useRecoilState } from "recoil";
-import { modalTweetState } from "../atoms/modalAtom";
+import { modalTweetState, showEmoji } from "../atoms/modalAtom";
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment } from "react";
 import { XIcon } from "@heroicons/react/outline";
@@ -7,6 +7,7 @@ import Input from "./Input";
 
 function TweetModal() {
   const [isTweetOpen, setIsTweetOpen] = useRecoilState(modalTweetState);
+  const [showEmojis, setShowEmojis] = useRecoilState(showEmoji);
 
   return (
     <Transition.Root show={isTweetOpen} as={Fragment}>
@@ -37,8 +38,10 @@ function TweetModal() {
             leaveFrom="opacity-100 translate-y-0 sm:scale-100"
             leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
             <div
-              className=" inline-block align-bottom bg-black rounded-2xl text-left overflow-hidden 
-              shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-xl sm:w-full">
+              className={` ${
+                showEmojis && "h-[750px]"
+              } inline-block align-bottom bg-black rounded-2xl text-left overflow-hidden 
+              shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-xl sm:w-full`}>
               <div className="flex w-full items-center px-1.5 pt-2 ">
                 <div
                   className="hoverAnimation w-9 h-9 flex items-center justify-center my-3 xl:px-0"

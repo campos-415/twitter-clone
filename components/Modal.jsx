@@ -20,7 +20,7 @@ import {
 } from "@heroicons/react/outline";
 import { useRouter } from "next/router";
 import Moment from "react-moment";
-import EmojiPicker, { Picker } from "@emoji-mart/react";
+import EmojiPicker from "@emoji-mart/react";
 
 function Modal() {
   const { data: session } = useSession();
@@ -39,8 +39,6 @@ function Modal() {
     () =>
       onSnapshot(doc(db, "posts", postId), (snapshot) => {
         setPost(snapshot.data());
-        console.log(postId);
-        console.log(snapshot.data());
       }),
     [postId]
   );
@@ -123,7 +121,9 @@ function Modal() {
             leaveFrom="opacity-100 translate-y-0 sm:scale-100"
             leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
             <div
-              className={`inline-block align-bottom bg-black rounded-2xl ${showEmojis && "h-[750px]"} text-left overflow-hidden 
+              className={` ${
+                showEmojis && "h-[700px]"
+              } inline-block align-bottom bg-black rounded-2xl text-left overflow-hidden 
             shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-xl sm:w-full`}>
               <div className="flex w-full items-center px-1.5 pt-2 ">
                 <div
@@ -221,7 +221,8 @@ function Modal() {
                             </div>
 
                             {showEmojis && (
-                              <div className="-ml-9 absolute mt-[465px] xl:ml-0 ">
+                              <div
+                                className={`-ml-9 absolute mt-[465px]  xl:ml-0`}>
                                 <EmojiPicker
                                   onEmojiSelect={addEmoji}
                                   theme="lightdark"
