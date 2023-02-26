@@ -45,7 +45,8 @@ function Comment({ comment }) {
         </div>
         <div className="text-[#6e767d] flex justify-between w-10/12">
           <div className="flex items-center space-x-1 group">
-            <div className="icon group-hover:bg-pink-600/10">
+            <div className="icon group-hover:bg-pink-600/10"
+            >
               <HeartIcon className="h-5 group-hover:text-pink-600" />
             </div>
             <span className="group-hover:text-pink-600 text-sm"></span>

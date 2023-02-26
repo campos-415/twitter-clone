@@ -9,7 +9,7 @@ import {
   collection,
   serverTimestamp,
 } from "@firebase/firestore";
-import { db } from "../firebase";
+import { db, storage } from "../firebase";
 import { useSession } from "next-auth/react";
 import {
   CalendarIcon,
@@ -21,6 +21,7 @@ import {
 import { useRouter } from "next/router";
 import Moment from "react-moment";
 import EmojiPicker from "@emoji-mart/react";
+import { ref  } from "firebase/storage";
 
 function Modal() {
   const { data: session } = useSession();
@@ -29,7 +30,6 @@ function Modal() {
   const [post, setPost] = useState();
   const [comment, setComment] = useState("");
   const router = useRouter();
-  const [input, setInput] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
   const [showEmojis, setShowEmojis] = useState(false);
   const filePickerRef = useRef(null);
@@ -49,7 +49,7 @@ function Modal() {
     let codesArray = [];
     sym.forEach((el) => codesArray.push("0x" + el));
     let emoji = String.fromCodePoint(...codesArray);
-    setInput(input + emoji);
+    setComment(comment + emoji);
   };
 
   const sendComment = async (e) => {
@@ -64,7 +64,7 @@ function Modal() {
       id: session.user.uid,
     });
 
-    const imageRef = ref(storage, `posts/${docRef.id}/image`);
+    const imageRef = ref(storage, `posts/${addDoc.id}/image`);
 
     if (selectedFile) {
       await uploadString(imageRef, selectedFile, "data_url").then(async () => {
@@ -75,7 +75,6 @@ function Modal() {
       });
     }
 
-    setInput("");
     setSelectedFile(null);
     setShowEmojis(false);
     setIsOpen(false);
@@ -234,9 +233,9 @@ function Modal() {
                             className="bg-[#1d9bf0] text-white rounded-full px-4 py-1.5 
                             font-bold shadow-md hover:bg-[#1a8cd8] disabled:hover:bg-[#1d9bf0] 
                             disabled:opacity-50 disabled:cursor-default"
-                            disabled={!input.trim() && !selectedFile}
+                            disabled={!comment.trim() && !selectedFile}
                             onClick={sendComment}>
-                            Tweet
+                            Reply
                           </button>
                         </div>
                       )}

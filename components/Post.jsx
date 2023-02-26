@@ -86,7 +86,6 @@ function Post({ id, post, postPage }) {
       router.push(`/users/${userId}`);
     }
 
-    // console.log(userPost)
   }
 
   return (
