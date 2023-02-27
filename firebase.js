@@ -9,13 +9,13 @@ import { getStorage } from "firebase/storage";
 // Your web app's Firebase configuration
 
 const firebaseConfig = {
-  apiKey: process.env.NEXT_PUBLIC_API_KEY,
-  authDomain: process.env.NEXT_PUBLIC_AUTH_DOMAIN,
-  projectId: process.env.NEXT_PUBLIC_PROJECT_ID,
-  storageBucket: process.env.NEXT_PUBLIC_STORAGE_BUCKET,
-  messagingSenderId: process.env.NEXT_PUBLIC_MESSAGING_SENDER_ID,
-  appId: process.env.NEXT_PUBLIC_APP_ID,
-  measurementId: process.env.NEXT_PUBLIC_MEASUREMENT_ID,
+  apiKey: "AIzaSyBIeCM0K3J9mK3A47AxDbPWpTFeVEU5pw0",
+  authDomain: "chatapp-3edca.firebaseapp.com",
+  projectId: "chatapp-3edca",
+  storageBucket: "chatapp-3edca.appspot.com",
+  messagingSenderId: "270067846421",
+  appId: "1:270067846421:web:b3316cfc0e4561ae842d1c",
+  measurementId: "G-BMKV7NKHF7"
 };
 
 // Initialize Firebase
