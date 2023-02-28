@@ -27,6 +27,23 @@ function PostPage({ providers, trendingResults, followResults }) {
   const { id } = router.query;
   const [post, setPost] = useState();
   const [comments, setComments] = useState([]);
+  const [users, setUsers] = useState([])
+
+  useEffect(() => {
+    
+    const unsubscribe = onSnapshot(collection(db, "posts"), (snapshot) => {
+      setUsers(snapshot.docs.map((doc) => {
+        return {
+          id: doc.data().id,
+          tag: doc.data().tag,
+          userImg: doc.data().userImg,
+          username: doc.data().username,
+        }
+      }))
+    })
+
+    return unsubscribe
+  },[])
 
   useEffect(
     () =>
@@ -89,6 +106,7 @@ function PostPage({ providers, trendingResults, followResults }) {
         <Widgets
           trendingResults={trendingResults}
           followResults={followResults}
+          user={users}
         />
 
         {isOpen && <Modal />}

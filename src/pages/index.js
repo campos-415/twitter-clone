@@ -7,8 +7,11 @@ import Modal from "components/Modal";
 import { useRecoilState } from "recoil";
 import { modalState } from "/atoms/modalAtom";
 import Widgets from "components/Widgets";
-import { modalTweetState } from "atoms/modalAtom";
+import { modalTweetState, user } from "atoms/modalAtom";
 import TweetModal from "components/TweetModal";
+import { useEffect, useState } from "react";
+import { collection, onSnapshot } from "firebase/firestore";
+import { db } from "/firebase";
 
 
 export default function Home({trendingResults, followResults, providers}) {
@@ -16,6 +19,23 @@ export default function Home({trendingResults, followResults, providers}) {
   const { data: session } = useSession()
   const [isOpen, setIsOpen] = useRecoilState(modalState);
   const [isTweetOpen, setIsTweetOpen] = useRecoilState(modalTweetState);
+  const [users, setUsers] = useState([]) 
+
+  useEffect(() => {
+    
+    const unsubscribe = onSnapshot(collection(db, "posts"), (snapshot) => {
+      setUsers(snapshot.docs.map((doc) => {
+        return {
+          id: doc.data().id,
+          tag: doc.data().tag,
+          userImg: doc.data().userImg,
+          username: doc.data().username,
+        }
+      }))
+    })
+
+    return unsubscribe
+  },[])
 
   if (!session) return <Login providers={providers} />
   
@@ -31,7 +51,7 @@ export default function Home({trendingResults, followResults, providers}) {
       <main className="bg-black min-h-screen flex max-w-[1500px] mx-auto">
         <Sidebar />
         <Feed /> 
-        <Widgets trendingResults={trendingResults} followResults={followResults}/>
+        <Widgets trendingResults={trendingResults} followResults={followResults} user={users} />
 
         {isOpen && <Modal />}
         {isTweetOpen && <TweetModal />}
