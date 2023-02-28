@@ -15,13 +15,13 @@ import { useSession } from "next-auth/react";
 import { useRecoilState } from "recoil";
 import { userPosts } from "atoms/modalAtom";
 
-function Profile({ user, userId, users }) {
+function Profile({ user}) {
   const router = useRouter();
   const [posts, setPosts] = useState([]);
   const { data: session } = useSession();
   const [userData, setUserData] = useRecoilState(userPosts)
   const [isOpen, setIsOpen] = useState(false)
-  const id = userId || user.id || session.user.uid;
+  const { id } = router.query
 
 
 
@@ -38,19 +38,17 @@ function Profile({ user, userId, users }) {
         }
       ),
     [db, router]
-  );
-
-  useEffect(() => {
-    showInput
-  })
-
+  )
 
   function showInput() {
-    if (id === session.user.uid) {
+    if (id !== session.user.uid) {
       setIsOpen(true)
     }
   }
 
+  useEffect(() => {
+    showInput()
+  })
   return (
     <>
       <div className="flex-grow border-l border-r border-gray-700 max-w-2xl sm:ml-[72px] xl:ml-[370px]">
@@ -88,7 +86,7 @@ function Profile({ user, userId, users }) {
           </div>
         </div>
 
-        <div>{isOpen && <Input />}</div>
+        <div>{!isOpen && <Input />}</div>
         <div className="pb-72">
           {posts?.map((post) => (
             <Post key={post?.id} id={post?.id} post={post?.data()} />

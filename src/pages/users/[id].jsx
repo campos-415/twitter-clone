@@ -56,7 +56,7 @@ function User({ trendingResults, providers }) {
 
       <main className="bg-black min-h-screen flex max-w-[1500px] mx-auto">
         <Sidebar />
-        <Profile user={userPost} userId={id} users={users}/>
+        <Profile user={userPost} />
         <Widgets trendingResults={trendingResults} />
 
         {isOpen && <Modal />}
