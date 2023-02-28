@@ -20,36 +20,20 @@ import Head from "next/head";
 import Login from "components/Login";
 import Widgets from "components/Widgets";
 
-function PostPage({ providers, trendingResults, followResults }) {
+function PostPage({ providers, trendingResults }) {
   const { data: session } = useSession();
   const [isOpen, setIsOpen] = useRecoilState(modalState);
   const router = useRouter();
   const { id } = router.query;
   const [post, setPost] = useState();
   const [comments, setComments] = useState([]);
-  const [users, setUsers] = useState([])
-
-  useEffect(() => {
-    
-    const unsubscribe = onSnapshot(collection(db, "posts"), (snapshot) => {
-      setUsers(snapshot.docs.map((doc) => {
-        return {
-          id: doc.data().id,
-          tag: doc.data().tag,
-          userImg: doc.data().userImg,
-          username: doc.data().username,
-        }
-      }))
-    })
-
-    return unsubscribe
-  },[])
 
   useEffect(
     () =>
       onSnapshot(doc(db, "posts", id), (snapshot) => {
         setPost(snapshot.data());
-      })[db]
+      }),
+    []
   );
 
   useEffect(
@@ -60,9 +44,9 @@ function PostPage({ providers, trendingResults, followResults }) {
           orderBy("timestamp", "desc")
         ),
         (snapshot) => setComments(snapshot.docs)
-      )[(db, id)]
+      ),
+    []
   );
-
 
   if (!session) return <Login providers={providers} />;
 
@@ -103,11 +87,7 @@ function PostPage({ providers, trendingResults, followResults }) {
           )}
         </div>
 
-        <Widgets
-          trendingResults={trendingResults}
-          followResults={followResults}
-          user={users}
-        />
+        <Widgets trendingResults={trendingResults} />
 
         {isOpen && <Modal />}
       </main>
@@ -121,16 +101,12 @@ export async function getServerSideProps(context) {
   const trendingResults = await fetch("https://www.jsonkeeper.com/b/NKEV").then(
     (res) => res.json()
   );
-  const followResults = await fetch("https://www.jsonkeeper.com/b/WWMJ").then(
-    (res) => res.json()
-  );
   const providers = await getProviders();
   const session = await getSession(context);
 
   return {
     props: {
       trendingResults,
-      followResults,
       providers,
       session,
     },

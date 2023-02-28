@@ -9,33 +9,13 @@ import { modalState } from "/atoms/modalAtom";
 import Widgets from "components/Widgets";
 import { modalTweetState, user } from "atoms/modalAtom";
 import TweetModal from "components/TweetModal";
-import { useEffect, useState } from "react";
-import { collection, onSnapshot } from "firebase/firestore";
-import { db } from "/firebase";
 
 
-export default function Home({trendingResults, followResults, providers}) {
+export default function Home({trendingResults, providers}) {
 
   const { data: session } = useSession()
   const [isOpen, setIsOpen] = useRecoilState(modalState);
   const [isTweetOpen, setIsTweetOpen] = useRecoilState(modalTweetState);
-  const [users, setUsers] = useState([]) 
-
-  useEffect(() => {
-    
-    const unsubscribe = onSnapshot(collection(db, "posts"), (snapshot) => {
-      setUsers(snapshot.docs.map((doc) => {
-        return {
-          id: doc.data().id,
-          tag: doc.data().tag,
-          userImg: doc.data().userImg,
-          username: doc.data().username,
-        }
-      }))
-    })
-
-    return unsubscribe
-  },[])
 
   if (!session) return <Login providers={providers} />
   
@@ -51,7 +31,7 @@ export default function Home({trendingResults, followResults, providers}) {
       <main className="bg-black min-h-screen flex max-w-[1500px] mx-auto">
         <Sidebar />
         <Feed /> 
-        <Widgets trendingResults={trendingResults} followResults={followResults} user={users} />
+        <Widgets trendingResults={trendingResults}/>
 
         {isOpen && <Modal />}
         {isTweetOpen && <TweetModal />}
@@ -64,16 +44,12 @@ export async function getServerSideProps(context) {
   const trendingResults = await fetch("https://www.jsonkeeper.com/b/NKEV").then(
     (res) => res.json()
   );
-  const followResults = await fetch("https://www.jsonkeeper.com/b/WWMJ").then(
-    (res) => res.json()
-  );
   const providers = await getProviders();
   const session = await getSession(context);
 
   return {
     props: {
       trendingResults,
-      followResults,
       providers,
       session,
     },

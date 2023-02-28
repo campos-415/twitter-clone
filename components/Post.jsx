@@ -39,6 +39,8 @@ function Post({ id, post, postPage }) {
   const [liked, setLiked] = useState(false);
   const router = useRouter();
 
+  // console.log(post)
+
   useEffect(
     () =>
       onSnapshot(

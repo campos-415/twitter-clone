@@ -6,19 +6,24 @@ import { useRecoilState } from "recoil";
 import { modalState, userPosts } from "/atoms/modalAtom";
 import Widgets from "components/Widgets";
 import Profile from "components/Profile";
-import { modalTweetState } from "atoms/modalAtom";
+import { modalTweetState, user } from "atoms/modalAtom";
 import TweetModal from "components/TweetModal";
 import Sidebar from "components/Sidebar";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { collection, onSnapshot } from "firebase/firestore";
 import { db } from "/firebase";
 
-function User({ trendingResults, followResults, providers }) {
+function User({ trendingResults, providers }) {
   const { data: session } = useSession();
   const [isOpen, setIsOpen] = useRecoilState(modalState);
   const [userPost, setUserPost] = useRecoilState(userPosts);
   const [isTweetOpen, setIsTweetOpen] = useRecoilState(modalTweetState);
   const [users, setUsers] = useState([])
+  const router = useRouter()
+  const { id } = router.query
+
+  // console.log(id)
 
   useEffect(() => {
     
@@ -36,6 +41,7 @@ function User({ trendingResults, followResults, providers }) {
     return unsubscribe
   },[])
 
+
   if (!session) return <Login providers={providers} />;
 
 
@@ -50,31 +56,8 @@ function User({ trendingResults, followResults, providers }) {
 
       <main className="bg-black min-h-screen flex max-w-[1500px] mx-auto">
         <Sidebar />
-        <Profile user={userPost} />
-        <Widgets trendingResults={trendingResults} followResults={followResults} user={users}/>
-
-        {/* {users.map((user, index) => (
-          <div
-            className="hover:bg-white hover:bg-opacity-[0.03] px-4 py-2 cursor-pointer transition duration-200 ease-out flex items-center"
-            key={index}>
-            <img
-              src={user.userImg}
-              width={50}
-              height={50}
-              className="rounded-full object-cover"
-              alt="userImg"
-            />
-            <div className="ml-4 leading-5 group">
-              <h4 className="font-bold group-hover:underline">
-                {user.username}
-              </h4>
-              <h5 className="text-gray-500 text-[15px]">{user.tag}</h5>
-            </div>
-            <button className="ml-auto bg-white text-black rounded-full font-bold text-sm py-1.5 px-3.5">
-              Follow
-            </button>
-          </div>
-        ))} */}
+        <Profile user={userPost} userId={id} users={users}/>
+        <Widgets trendingResults={trendingResults} />
 
         {isOpen && <Modal />}
         {isTweetOpen && <TweetModal />}
@@ -89,16 +72,13 @@ export async function getServerSideProps(context) {
   const trendingResults = await fetch("https://www.jsonkeeper.com/b/NKEV").then(
     (res) => res.json()
   );
-  const followResults = await fetch("https://www.jsonkeeper.com/b/WWMJ").then(
-    (res) => res.json()
-  );
+  
   const providers = await getProviders();
   const session = await getSession(context);
 
   return {
     props: {
       trendingResults,
-      followResults,
       providers,
       session,
     },
