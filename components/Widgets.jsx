@@ -69,7 +69,7 @@ function Widgets() {
             <FontAwesomeIcon icon={faGithub} className="w-9" />
           </div>
         </Link>
-        <Link href={"https://github.com/campos-415"} target={"_blank"}>
+        <Link href={"https://www.linkedin.com/in/campos415/"} target={"_blank"}>
           <div className="hover:bg-white hover:bg-opacity-[0.03] px-4 py-3 cursor-pointer transition duration-200 ease-out flex items-center justify-between w-full text-[#1d9bf0] font-light">
             Linked In
             <FontAwesomeIcon icon={faLinkedinIn} className="w-9" />
