@@ -19,6 +19,8 @@ import { useRecoilState } from "recoil";
 
 import Link from "next/link";
 import { modalTweetState, postIdState } from "atoms/modalAtom";
+import Trending from "./Trending";
+import Widgets from "./Widgets";
 
 function Sidebar() {
   const { data: session } = useSession();
@@ -54,14 +56,14 @@ function Sidebar() {
           <SidebarLink text="Home" Icon={HomeIcon} active />
         </Link>
         <SidebarLink text="Explore" Icon={HashtagIcon} />
-        <SidebarLink text="Notifications" Icon={BellIcon} />
+        {/* <SidebarLink text="Notifications" Icon={BellIcon} /> */}
         <SidebarLink text="Messages" Icon={InboxIcon} />
-        <SidebarLink text="Bookmarks" Icon={BookmarkIcon} />
-        <SidebarLink text="Lists" Icon={ClipboardListIcon} />
+        {/* <SidebarLink text="Bookmarks" Icon={BookmarkIcon} /> */}
+        {/* <SidebarLink text="Lists" Icon={ClipboardListIcon} /> */}
         <div onClick={() => router.push(`/user/${session.user.uid}`)}>
           <SidebarLink text="Profile" Icon={UserIcon} />
         </div>
-        <SidebarLink text="More" Icon={DotsCircleHorizontalIcon} />
+        {/* <SidebarLink text="More" Icon={DotsCircleHorizontalIcon} /> */}
         <div onClick={signOut}>
           <SidebarLink text="Sign Out" Icon={ArrowCircleLeftIcon} />
         </div>

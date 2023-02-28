@@ -65,11 +65,11 @@ function Profile({ user}) {
             <img src="/backdropImg.jpeg" alt="" />
             <img
               src={user?.userImg || user?.image}
-              className="rounded-full w-[150px] border-[6px] border-black absolute top-[150px] left-[2%]"
+              className="rounded-full w-[150px] border-[6px] border-black absolute top-[50px] sm:top-[150px] md:top-[150px] xl:top-[150px] xl:left-[2%]"
               alt=""
             />
           </div>
-          <div className="flex flex-col pb-8 pt-[150px] ml-4 xl:pt-[100px]">
+          <div className="flex flex-col pb-8 pt-[100px] ml-4 xl:pt-[100px]">
             <h3 className="text-[24px] text-white font-bold ">
               {user?.name || user?.username}
             </h3>

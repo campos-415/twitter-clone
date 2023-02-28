@@ -87,7 +87,7 @@ function PostPage({ providers, trendingResults }) {
           )}
         </div>
 
-        <Widgets trendingResults={trendingResults} />
+        <Widgets />
 
         {isOpen && <Modal />}
       </main>
@@ -98,15 +98,12 @@ function PostPage({ providers, trendingResults }) {
 export default PostPage;
 
 export async function getServerSideProps(context) {
-  const trendingResults = await fetch("https://www.jsonkeeper.com/b/NKEV").then(
-    (res) => res.json()
-  );
+
   const providers = await getProviders();
   const session = await getSession(context);
 
   return {
     props: {
-      trendingResults,
       providers,
       session,
     },

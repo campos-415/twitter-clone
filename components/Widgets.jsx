@@ -9,8 +9,10 @@ import { useEffect, useState } from "react";
 import Trending from "./Trending";
 import { useRecoilState } from "recoil";
 import { userPosts } from "atoms/modalAtom";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faGithub, faLinkedinIn } from '@fortawesome/free-brands-svg-icons'
 
-function Widgets({ trendingResults}) {
+function Widgets() {
   const { data: session } = useSession();
   const [users, setUsers] = useState([])
   const [user, setUser] = useRecoilState(userPosts)
@@ -61,13 +63,20 @@ function Widgets({ trendingResults}) {
         </div>
       </div>
       <div className="text-[#d9d9d9] space-y-3 bg-[#15181c] pt-2 rounded-xl w-11/12 xl:w-9/12">
-        <h4 className="font-bold text-xl px-4">What's happening</h4>
-        {trendingResults.map((result, index) => (
-          <Trending key={index} result={result} />
-        ))}
-        <button className="hover:bg-white hover:bg-opacity-[0.03] px-4 py-3 cursor-pointer transition duration-200 ease-out flex items-center justify-between w-full text-[#1d9bf0] font-light">
-          Show more
-        </button>
+        <h4 className="font-bold text-xl px-4">Check my other cool Projects</h4>
+          <Trending />
+        <div className="hover:bg-white hover:bg-opacity-[0.03] px-4 py-3 cursor-pointer transition duration-200 ease-out flex items-center justify-between w-full text-[#1d9bf0] font-light">
+          <Link href={"https://github.com/campos-415"} target={"_blank"}>
+            Github Account
+          </Link>
+          <FontAwesomeIcon icon={faGithub} className="w-9"/>
+        </div>
+        <div className="hover:bg-white hover:bg-opacity-[0.03] px-4 py-3 cursor-pointer transition duration-200 ease-out flex items-center justify-between w-full text-[#1d9bf0] font-light">
+          <Link href={"https://github.com/campos-415"} target={"_blank"}>
+            Linked In
+          </Link>
+          <FontAwesomeIcon icon={faLinkedinIn} className="w-9"/>
+        </div>
       </div>
       <div className="text-[#d9d9d9] space-y-3 bg-[#15181c] pt-2 rounded-xl w-11/12 xl:w-9/12">
         <h4 className="font-bold text-xl px-4">Who to Stalk</h4>

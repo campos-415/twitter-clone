@@ -10,7 +10,7 @@ import Profile from "components/Profile";
 import { modalTweetState } from "atoms/modalAtom";
 import TweetModal from "components/TweetModal";
 
-function User({ trendingResults, providers }) {
+function User({ providers }) {
   const { data: session } = useSession();
   const [isOpen, setIsOpen] = useRecoilState(modalState);
   const [isTweetOpen, setIsTweetOpen] = useRecoilState(modalTweetState);
@@ -30,7 +30,7 @@ function User({ trendingResults, providers }) {
       <main className="bg-black min-h-screen flex max-w-[1500px] mx-auto">
         <Sidebar />
         <Profile user={session?.user} />
-        <Widgets trendingResults={trendingResults} />
+        <Widgets />
 
         {isOpen && <Modal />}
         {isTweetOpen && <TweetModal />}
@@ -42,15 +42,11 @@ function User({ trendingResults, providers }) {
 export default User;
 
 export async function getServerSideProps(context) {
-  const trendingResults = await fetch("https://www.jsonkeeper.com/b/NKEV").then(
-    (res) => res.json()
-  );
   const providers = await getProviders();
   const session = await getSession(context);
 
   return {
     props: {
-      trendingResults,
       providers,
       session,
     },

@@ -14,7 +14,7 @@ import { useEffect, useState } from "react";
 import { collection, onSnapshot } from "firebase/firestore";
 import { db } from "/firebase";
 
-function User({ trendingResults, providers }) {
+function User({ providers }) {
   const { data: session } = useSession();
   const [isOpen, setIsOpen] = useRecoilState(modalState);
   const [userPost, setUserPost] = useRecoilState(userPosts);
@@ -57,7 +57,7 @@ function User({ trendingResults, providers }) {
       <main className="bg-black min-h-screen flex max-w-[1500px] mx-auto">
         <Sidebar />
         <Profile user={userPost} />
-        <Widgets trendingResults={trendingResults} />
+        <Widgets  />
 
         {isOpen && <Modal />}
         {isTweetOpen && <TweetModal />}
@@ -69,16 +69,12 @@ function User({ trendingResults, providers }) {
 export default User;
 
 export async function getServerSideProps(context) {
-  const trendingResults = await fetch("https://www.jsonkeeper.com/b/NKEV").then(
-    (res) => res.json()
-  );
   
   const providers = await getProviders();
   const session = await getSession(context);
 
   return {
     props: {
-      trendingResults,
       providers,
       session,
     },
