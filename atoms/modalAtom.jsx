@@ -22,8 +22,3 @@ export const userPosts = atom({
   key: "userPosts",
   default: [],
 })
-
-export const user = atom({
-  key: "user",
-  default: {},
-})
