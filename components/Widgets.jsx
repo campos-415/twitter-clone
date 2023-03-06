@@ -1,4 +1,4 @@
-import { SearchIcon } from "@heroicons/react/outline";
+ import { SearchIcon } from "@heroicons/react/outline";
 import { db } from "/firebase";
 import { collection, onSnapshot } from "firebase/firestore";
 import { useSession } from "next-auth/react";

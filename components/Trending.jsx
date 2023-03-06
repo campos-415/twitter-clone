@@ -29,7 +29,7 @@ function Trending() {
             A movie Search website where users can look for movie
             recomnendations!
           </h6>
-          <Link href={"https://com-flix.vercel.app"} target={"_blank"}>
+          <Link href={"https://comflix.vercel.app"} target={"_blank"}>
             <p className="text-[#6e767d] text-xs font-medium max-w-[250px] mt-2">
               {" "}
               <span className="tag">Take me there ➡!</span>
