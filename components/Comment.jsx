@@ -18,7 +18,7 @@ function Comment({ comment }) {
       <img
         src={comment?.userImg}
         alt=""
-        className="h-11 w-11 rounded-full mr-4"
+        className="h-7 w-7 rounded-full mr-4"
       />
       <div className="flex flex-col spcace-y-2 w-full">
         <div className="flex justify-between">
